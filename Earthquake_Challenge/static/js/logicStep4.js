@@ -15,8 +15,8 @@ let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/sate
 
 // Create a base layer that holds both maps.
 let baseMaps = {
-    Streets: streets,
-    Satellite: satelliteStreets
+    "Streets": streets,
+    "Satellite": satelliteStreets
 };
 
 // Create the earthquake layer for our map.
@@ -26,7 +26,7 @@ let earthquakes = new L.layerGroup();
 // This overlay will be visible all the time.
 let overlays = {
     Earthquakes: earthquakes
-};
+  };
 
 // Create the map object with a center and zoom level.
 let map = L.map('mapid', {
@@ -54,8 +54,8 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
             radius: getRadius(feature.properties.mag),
             stroke: true,
             weight: 0.5
-        }
-    };
+        };
+    }
 
     // This function determines the radius of the earthquake marker based on its magnitude.
     // Earthquakes with a magnitude of 0 will be plotted with a radius of 1.
@@ -64,7 +64,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
             return 1;
         }
         return magnitude * 4;
-    };
+    }
 
     // This function determines the color of the circle based on the magnitude of the earthquake.
     function getColor(magnitude) {
@@ -84,10 +84,11 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
             return "#d4ee00";
         }
         return "#98ee00";
-    };
+    }
 
     // Creating a GeoJSON layer with the retrieved data.
     L.geoJson(data, {
+
         // Turn each feature into a circleMarker on the map.
         pointToLayer: function (feature, latlng) {
             console.log(data);
@@ -100,42 +101,8 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
         onEachFeature: function (feature, layer) {
             layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
         }
-
     }).addTo(earthquakes);
 
-    // Add a legend control object
-    let legend = L.control({
-        position: "bottomright"
-    });
-
-    // Add all the details for the legend.
-    legend.onAdd = function () {
-        let div = L.DomUtil.create("div", "info legend");
-        const magnitudes = [0, 1, 2, 3, 4, 5];
-        const colors = [
-            "#98ee00",
-            "#d4ee00",
-            "#eecc00",
-            "#ee9c00",
-            "#ea822c",
-            "#ea2c2c"
-        ];
-    
-    // Looping through our intervals to generate a label with a colored square for each interval.
-    for (var i = 0; i < magnitudes.length; i++) {
-        console.log(colors[i]);
-        div.innerHTML +=
-            "<i style='background: " + colors[i] + "'></i> " +
-            magnitudes[i] + (magnitudes[i + 1] ? "&ndash;" + magnitudes[i + 1] + "<br>" : "+");
-    }
-    return div;
-
-};
-
-legend.addTo(map);
-
-// Add earthquake layer to the map
-earthquakes.addTo(map);
-
-
+        // Add earthquake layer to the map
+        earthquakes.addTo(map);
 });
