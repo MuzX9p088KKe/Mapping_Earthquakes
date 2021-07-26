@@ -1,4 +1,4 @@
-#Mapping_Earthquakes
+# Mapping_Earthquakes
 
 ## Purpose
 This project aimed at displaying earthquake data on a map by combining Leaflet and geoJSON data. The boundaries of tectonic plates were also included on the map in order to show a correlation between earthquakes location and their proximity to the boundaries.
